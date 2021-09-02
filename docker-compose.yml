@@ -8,5 +8,5 @@ services:
     environment:
       - POSTGRES_PASSWORD=myPassword
     ports:
-      - '5444:5432'
+      - '5432:5432'
     
