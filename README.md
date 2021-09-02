@@ -33,9 +33,25 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+## Docker
+
+```bash
+$ docker-compose up -d
+```
+
+## Migrations
+
+```bash
+$ npm run migration:generate name
+```
+
+```bash
+$ npm run migration:run 
+```
+
+```bash
+$ npm run migration:revert 
+```
 
 
 
-DOCKER
-
-docker-compose up -d
