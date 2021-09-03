@@ -4,6 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { getConnection } from 'typeorm';
+import { Role } from '../role/role.entity';
+import { UserDetails } from './user.details.entity';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 
@@ -39,6 +42,13 @@ export class UserService {
   }
 
   async create(user: User): Promise<User> {
+    const details = new UserDetails();
+    user.details = details;
+
+    const repo = await getConnection().getRepository(Role);
+    const defaultRole = await repo.findOne({ where: { name: 'GENERAL' } });
+    user.roles = [defaultRole];
+
     const savedUser: User = await this._userRepository.save(user);
     return savedUser;
   }
