@@ -8,7 +8,7 @@ import { User } from '../user/user.entity';
 import { SignupDto } from './dto';
 
 //nos ayuda acceder al modelo de la base de datos
-@EntityRepository()
+@EntityRepository(User)
 export class AuthRepository extends Repository<User> {
   async signup(signupDto: SignupDto) {
     const { username, email, password } = signupDto;
