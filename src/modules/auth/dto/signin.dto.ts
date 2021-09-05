@@ -7,4 +7,8 @@ export class SigninDto{
     @IsNotEmpty()
     @IsString()
     password: string;
+    @IsNotEmpty()
+    @IsString()
+    email: string;
+
 }
