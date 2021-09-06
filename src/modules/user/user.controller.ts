@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
 import { UserService } from './user.service';
@@ -28,14 +38,21 @@ export class UserController {
 
   @Patch(':id')
   async updateUser(@Param('id', ParseIntPipe) id: number, @Body() user: User) {
-    const updatedUser = await this._userService.update(id,user);
+    const updatedUser = await this._userService.update(id, user);
     return true;
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id', ParseIntPipe) id: number){
+  async deleteUser(@Param('id', ParseIntPipe) id: number) {
     await this._userService.delete(id);
     return true;
   }
 
+  @Post('setRole/:userId/:roleId')
+  async setRoleToUser(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('roleId', ParseIntPipe) roleId: number,
+  ) {
+    return this._userService.setRoleToUser(userId, roleId);
+  }
 }
