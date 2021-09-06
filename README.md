@@ -13,45 +13,16 @@ $ npm install
 ```bash
 # development
 $ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
 ## Docker
 
 ```bash
 $ docker-compose up -d
 ```
 
-## Migrations
-
-```bash
-$ npm run migration:generate name
-```
+## Migrations`
 
 ```bash
 $ npm run migration:run 
 ```
-
-```bash
-$ npm run migration:revert 
-```
-
-
-
