@@ -23,7 +23,7 @@ $ npm run start
 $ docker-compose up -d
 ```
 
-## Migrations`
+## Migrations
 
 ```bash
 $ npm run migration:run 
