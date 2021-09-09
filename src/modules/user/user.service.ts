@@ -5,12 +5,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { status } from '../../shared/entity-status.num';
-import { getConnection } from 'typeorm';
-import { Role } from '../role/role.entity';
 import { RoleRepository } from '../role/role.repository';
-import { UserDetails } from './user.details.entity';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
+import { ReadUserDto, UpdateUserDto } from './dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -21,7 +20,7 @@ export class UserService {
     private readonly _roleRepository: RoleRepository,
   ) {}
 
-  async get(id: number): Promise<User> {
+  async get(id: number): Promise<ReadUserDto> {
     if (!id) {
       throw new BadRequestException('Id must be sent');
     }
@@ -34,46 +33,32 @@ export class UserService {
       throw new NotFoundException();
     }
 
-    return user;
+    return plainToClass(ReadUserDto, user);
   }
 
-  async getAll(): Promise<User[]> {
+  async getAll(): Promise<ReadUserDto[]> {
     const users: User[] = await this._userRepository.find({
       where: { status: status.ACTIVE },
     });
 
-    return users;
+    return users.map((user: User) => plainToClass(ReadUserDto, user));
   }
 
-  async create(user: User): Promise<User> {
-    const details = new UserDetails();
-    user.details = details;
-
-    const repo = await getConnection().getRepository(Role);
-    const defaultRole = await repo.findOne({ where: { name: 'GENERAL' } });
-    user.roles = [defaultRole];
-
-    const savedUser: User = await this._userRepository.save(user);
-    return savedUser;
-  }
-
-  async update(id: number, user: User): Promise<void> {
-    await this._userRepository.update(id, user);
-  }
-
-  async delete(id: number): Promise<void> {
-    const userExist = await this._userRepository.findOne(id, {
-      where: { status: status.ACTIVE },
+  async update(userId: number, user: UpdateUserDto): Promise<ReadUserDto> {
+    const foundUser = await this._userRepository.findOne(userId, {
+      where: { status: 'ACTIVE' },
     });
 
-    if (!userExist) {
-      throw new NotFoundException();
-    }
+    if (!foundUser) throw new NotFoundException('User does not exit');
 
-    await this._userRepository.update(id, { status: 'INACTIVE' });
+    foundUser.username = user.username;
+
+    const updateUser = await this._userRepository.save(foundUser);
+
+    return plainToClass(ReadUserDto, updateUser);
   }
 
-  async setRoleToUser(userId: number, roleId: number) {
+  async delete(userId: number): Promise<void> {
     const userExist = await this._userRepository.findOne(userId, {
       where: { status: status.ACTIVE },
     });
@@ -81,7 +66,19 @@ export class UserService {
     if (!userExist) {
       throw new NotFoundException();
     }
-    
+
+    await this._userRepository.update(userId, { status: 'INACTIVE' });
+  }
+
+  async setRoleToUser(userId: number, roleId: number):Promise<boolean> {
+    const userExist = await this._userRepository.findOne(userId, {
+      where: { status: status.ACTIVE },
+    });
+
+    if (!userExist) {
+      throw new NotFoundException();
+    }
+
     const roleExist = await this._roleRepository.findOne(roleId, {
       where: { status: status.ACTIVE },
     });
@@ -94,6 +91,5 @@ export class UserService {
     await this._userRepository.save(userExist);
 
     return true;
-
   }
 }
