@@ -53,8 +53,6 @@ export class BookService {
       .where('books.status = :status', { status: 'ACTIVE' })
       .andWhere('users.id = :id ', { id: authorId })
       .getMany();
-
-    console.log(books);
     return books.map((book) => plainToClass(ReadBookDto, book));
   }
 
