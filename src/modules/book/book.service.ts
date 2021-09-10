@@ -90,7 +90,7 @@ export class BookService {
 
   async update(
     bookId: number,
-    role: Partial<UpdateBookDto>,
+    book: Partial<UpdateBookDto>,
     authorId: number,
   ): Promise<ReadBookDto> {
     const bookExits = await this._bookRepository.findOne(bookId, {
@@ -106,7 +106,7 @@ export class BookService {
     if (!isOwnBook)
       throw new UnauthorizedException('This user is not the author book');
 
-    const updateBook = await this._bookRepository.update(bookId, role);
+    const updateBook = await this._bookRepository.update(bookId, book);
 
     return plainToClass(ReadBookDto, updateBook);
   }
