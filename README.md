@@ -23,8 +23,30 @@ $ npm run start
 $ docker-compose up -d
 ```
 
-## Migrations`
+## Migrations
 
 ```bash
 $ npm run migration:run 
+```
+
+## End-Points
+
+```bash
+$ POST http://localhost:5000/api/auth/signup
+
+$ POST http://localhost:5000/api/auth/signin
+
+$ POST http://localhost:5000/api/users/setRole/5/3
+
+$ GET http://localhost:5000/api/users
+
+$ POST http://localhost:5000/api/roles
+
+$ GET http://localhost:5000/api/roles
+
+$ POST http://localhost:5000/api/book
+
+$ GET http://localhost:5000/api/book
+
+$ GET http://localhost:5000/api/book/author/5
 ```
