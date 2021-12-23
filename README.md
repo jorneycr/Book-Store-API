@@ -26,6 +26,10 @@ $ docker-compose up -d
 ## Migrations
 
 ```bash
+$ npm run migration:generate migration-name
+```
+
+```bash
 $ npm run migration:run 
 ```
 
