@@ -4,11 +4,13 @@
 
 # BookStore API
 
+
 ## Installation
 
 ```bash
 $ npm install
 ```
+
 
 ## Running the app
 
@@ -16,11 +18,13 @@ $ npm install
 $ npm run start
 ```
 
+
 ## Docker
 
 ```bash
 $ docker-compose up -d
 ```
+
 
 ## Migrations
 
@@ -31,6 +35,7 @@ $ npm run migration:generate migration-name
 ```bash
 $ npm run migration:run 
 ```
+
 
 ## End-Points
 
